@@ -15,6 +15,7 @@ function Square(props) {
         super(props);
         this.state = {
             squares: Array(9).fill(null),
+            xIsNext: true,
         };
     }
     handleClick(i) {
@@ -22,9 +23,12 @@ function Square(props) {
         // slice() creates a copy of the squares array to modify instead of modifying the existing array
         // * Immutability is important, because it helps you build pure components in React
         const squares = this.state.squares.slice();
-        
-        squares[i] = 'X';
-        this.setState({squares: squares});
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+          squares: squares,
+          // * Flip the value of xIsNext (X -> O or O -> X)
+          xIsNext: !this.state.xIsNext,
+        });
     }
     renderSquare(i) {
       return <Square 
@@ -34,7 +38,7 @@ function Square(props) {
     }
   
     render() {
-      const status = 'Next player: X';
+      const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
   
       return (
         <div>
